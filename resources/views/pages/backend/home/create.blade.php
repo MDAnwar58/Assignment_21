@@ -31,18 +31,26 @@
                 email = document.getElementById("email").value,
                 password = document.getElementById("password").value;
 
-            const response = await axios.post("/user-create", {
-                name: name,
-                email: email,
-                password: password
-            });
-            if (response.status === 200 && response.data['status'] === 'success') {
-                successToast(response.data['message'])
-                setTimeout(() => {
-                    window.location.href = "/admin/home";
-                }, 2000);
+            if (name.length === 0) {
+                    errorToast("Please enter user name?");
+            } else if (email.length === 0) {
+                    errorToast("Please enter user email address?");
+            } else if (password.length === 0) {
+                    errorToast("Please enter user password?");
             } else {
-                errorToast(response.data['message']);
+                const response = await axios.post("/user-create", {
+                    name: name,
+                    email: email,
+                    password: password
+                });
+                if (response.status === 200 && response.data['status'] === 'success') {
+                    successToast(response.data['message'])
+                    setTimeout(() => {
+                        window.location.href = "/admin/home";
+                    }, 2000);
+                } else {
+                    errorToast(response.data['message']);
+                }
             }
         }
     </script>
